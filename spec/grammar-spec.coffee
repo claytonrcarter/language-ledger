@@ -26,8 +26,8 @@ describe "Ledger grammar", ->
   describe "directives", ->
     it "tokenizes directives", ->
       directiveLists =
-        'keyword.account': ['account']
-        'keyword.commodity': ['commodity']
+        'keyword.account': ['account Account Name']
+        'keyword.commodity': ['commodity Commodity Name']
         'keyword.directive': [
           'apply tag', 'end tag',
           'alias',
@@ -43,7 +43,10 @@ describe "Ledger grammar", ->
       for scope, list of directiveLists
         for directive in list
           {tokens} = grammar.tokenizeLine directive
-          expect(tokens[0].value).toEqual directive
+          if scope == 'keyword.directive'
+            expect(tokens[0].value).toEqual directive
+          else
+            expect(tokens[0].value).toEqual directive.split(' ')[0]
           expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', scope]
 
 # TODO

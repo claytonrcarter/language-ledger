@@ -105,8 +105,6 @@ module.exports =
     @subscriptions.add(editorDestroyedSubscription)
 
   deactivate: ->
-    console.log "deactivate"
     @subscriptions?.dispose()
 
   serialize: ->
-    console.log "serialize"

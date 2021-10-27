@@ -55,6 +55,8 @@ describe "Ledger transactions view", ->
       @editor.setGrammar(atom.grammars.selectGrammar('source.ledger'))
       editorView = atom.views.getView(@editor)
       jasmine.attachToDOM(editorView)
+      # HACK force markers to update, otherwise getMarkers() always return []
+      @editor.insertText('')
 
       advanceClock(@editor.getBuffer().stoppedChangingDelay)
 

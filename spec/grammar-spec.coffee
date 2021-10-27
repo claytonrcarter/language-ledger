@@ -178,6 +178,23 @@ end #{directive}
       expect(tokens[2].value).toEqual '*'
       expect(tokens[2].scopes).toEqual clearedTransaction.concat ['keyword.transaction.cleared']
 
+  describe "dates", ->
+    it "tokenizes dates", ->
+      transactions = [
+        '2015/01/01 payee'
+        '01/01 payee'
+        '1/1 payee'
+        '2015/1/1 payee'
+        '2015/1/01 payee'
+        '1.1 payee'
+        '2015-1-1 payee'
+        '1-1=2.2 payee'
+      ]
+
+      for xact in transactions
+        {tokens} = grammar.tokenizeLine xact
+        expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.transaction.uncleared', 'constant.numeric.date.transaction']
+
   describe "indentation", ->
     beforeEach ->
       waitsForPromise ->

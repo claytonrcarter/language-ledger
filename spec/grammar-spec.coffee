@@ -32,6 +32,17 @@ describe "Ledger grammar", ->
       expect(tokens[2].value).toEqual 'Account Name'
       expect(tokens[2].scopes).toEqual ['source.ledger', 'meta.directive', 'string.account']
 
+    it "tokenizes alias directives", ->
+      {tokens} = grammar.tokenizeLine 'alias Account Name=Another Name'
+      expect(tokens[0].value).toEqual 'alias'
+      expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.alias']
+
+      expect(tokens[2].value).toEqual 'Account Name'
+      expect(tokens[2].scopes).toEqual ['source.ledger', 'meta.directive', 'string.account']
+
+      expect(tokens[4].value).toEqual 'Another Name'
+      expect(tokens[4].scopes).toEqual ['source.ledger', 'meta.directive', 'string.account']
+
     it "tokenizes commodity directives", ->
       {tokens} = grammar.tokenizeLine 'commodity Commodity'
       expect(tokens[0].value).toEqual 'commodity'

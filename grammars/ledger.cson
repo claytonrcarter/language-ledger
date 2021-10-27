@@ -25,6 +25,12 @@ repository:
     captures:
       1: {name: "keyword.account"}
       2: {patterns: [{include: "#account"}]}
+  directive_alias:
+    match: "^(alias)\\b\\s+(.*)=(.*)"
+    captures:
+      1: {name: "keyword.alias"}
+      2: {patterns: [{include: "#account"}]}
+      3: {patterns: [{include: "#account"}]}
   directive_commodity:
     match: "^(commodity)\\b\\s+(.*)"
     captures:
@@ -40,6 +46,7 @@ repository:
       1:
          patterns: [
            {include: "#directive_account"}
+           {include: "#directive_alias"}
            {include: "#directive_commodity"}
            {include: "#directive_others"}
          ]

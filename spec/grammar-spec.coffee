@@ -10,7 +10,7 @@ describe "Ledger grammar", ->
     expect(grammar).toBeTruthy()
     expect(grammar.scopeName).toBe 'source.ledger'
 
-  describe "grammar", ->
+  describe "comments", ->
     it "tokenizes line comments", ->
       tokensByLines = grammar.tokenizeLines """
 ; This is a single line comment,
@@ -22,6 +22,14 @@ describe "Ledger grammar", ->
       for tokens in tokensByLines
         expect(tokens[0].value).toMatch /[Tt]his/
         expect(tokens[0].scopes).toEqual ['source.ledger', 'comment.line']
+
+    it "tokenizes inline directive comments", ->
+      {tokens} = grammar.tokenizeLine 'account Account Name ; just a comment'
+      expect(tokens[0].value).toEqual 'account'
+      expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.account']
+
+      expect(tokens[4].value).toEqual '; just a comment'
+      expect(tokens[4].scopes).toEqual ['source.ledger', 'meta.directive', 'comment.note.directive']
 
   describe "directives", ->
     it "tokenizes account directives", ->

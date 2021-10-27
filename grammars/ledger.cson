@@ -40,7 +40,7 @@ repository:
     match: "^(apply tag|end tag|alias|assert|bucket|capture|check|define|include|tag|year|Y)\\b"
     name: "keyword.directive"
   directive:
-    match: "^[@!]?([A-Za-z].*)$"
+    begin: "^[@!]?([A-Za-z][^\\;]*)(\\;.*)?$"
     name: "meta.directive"
     captures:
       1:
@@ -50,6 +50,7 @@ repository:
            {include: "#directive_commodity"}
            {include: "#directive_others"}
          ]
+      2: {name: "comment.note.directive"}
   transaction_comment:
     name: "comment.transaction"
     match: "\\;.*$"

@@ -24,11 +24,24 @@ describe "Ledger grammar", ->
         expect(tokens[0].scopes).toEqual ['source.ledger', 'comment.line']
 
   describe "directives", ->
-    it "tokenizes directives", ->
-      directiveLists =
-        'keyword.account': ['account Account Name']
-        'keyword.commodity': ['commodity Commodity Name']
-        'keyword.directive': [
+    it "tokenizes account directives", ->
+      {tokens} = grammar.tokenizeLine 'account Account Name'
+      expect(tokens[0].value).toEqual 'account'
+      expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.account']
+
+      expect(tokens[2].value).toEqual 'Account Name'
+      expect(tokens[2].scopes).toEqual ['source.ledger', 'meta.directive', 'string.account']
+
+    it "tokenizes commodity directives", ->
+      {tokens} = grammar.tokenizeLine 'commodity Commodity'
+      expect(tokens[0].value).toEqual 'commodity'
+      expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.commodity']
+
+      expect(tokens[2].value).toEqual 'Commodity'
+      expect(tokens[2].scopes).toEqual ['source.ledger', 'meta.directive', 'constant.other.symbol.commodity']
+
+    it "tokenizes other directives", ->
+      directives = [
           'apply tag', 'end tag',
           'alias',
           'assert',
@@ -38,16 +51,13 @@ describe "Ledger grammar", ->
           'define',
           'include',
           'tag',
-          'year', 'Y']
+          'year', 'Y'
+      ]
 
-      for scope, list of directiveLists
-        for directive in list
-          {tokens} = grammar.tokenizeLine directive
-          if scope == 'keyword.directive'
-            expect(tokens[0].value).toEqual directive
-          else
-            expect(tokens[0].value).toEqual directive.split(' ')[0]
-          expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', scope]
+      for directive in directives
+        {tokens} = grammar.tokenizeLine directive
+        expect(tokens[0].value).toEqual directive
+        expect(tokens[0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.directive']
 
 # TODO
     xit "tokenizes block directives and block comments", ->

@@ -39,6 +39,9 @@ repository:
   directive_others:
     match: "^(apply tag|end tag|alias|assert|bucket|capture|check|define|include|tag|year|Y)\\b"
     name: "keyword.directive"
+  directive_comment:
+    name: "comment.note.directive"
+    match: "\\;.*$"
   directive:
     begin: "^[@!]?([A-Za-z][^\\;]*)(\\;.*)?$"
     name: "meta.directive"
@@ -51,6 +54,10 @@ repository:
            {include: "#directive_others"}
          ]
       2: {name: "comment.note.directive"}
+    patterns: [
+      {include: "#directive_comment"}
+    ]
+    end: "(^\\s+$)|(?=(^\\S))"
   transaction_comment:
     name: "comment.transaction"
     match: "\\;.*$"

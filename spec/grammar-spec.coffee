@@ -31,6 +31,17 @@ describe "Ledger grammar", ->
       expect(tokens[4].value).toEqual '; just a comment'
       expect(tokens[4].scopes).toEqual ['source.ledger', 'meta.directive', 'comment.note.directive']
 
+    it "tokenizes directive comments", ->
+      tokensByLines = grammar.tokenizeLines """
+commodity Commodity
+    ; this is a comment
+"""
+      expect(tokensByLines[0][0].value).toEqual 'commodity'
+      expect(tokensByLines[0][0].scopes).toEqual ['source.ledger', 'meta.directive', 'keyword.commodity']
+
+      expect(tokensByLines[1][1].value).toEqual '; this is a comment'
+      expect(tokensByLines[1][1].scopes).toEqual ['source.ledger', 'meta.directive', 'comment.note.directive']
+
   describe "directives", ->
     it "tokenizes account directives", ->
       {tokens} = grammar.tokenizeLine 'account Account Name'

@@ -106,6 +106,7 @@
     symbols:
       Payee:
         selector: '.string.payee'
+        suggestionPriority: 2
 
 '.source.ledger .comment.line':
   editor:

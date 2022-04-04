@@ -1,6 +1,7 @@
 {CompositeDisposable} = require 'atom'
 {Ledger} = require 'ledger-cli'
-autocompleteProvider = require './autocomplete-provider'
+accountProvider = require './account-provider'
+payeeProvider = require './payee-provider'
 
 bufferFilePath = -> atom.workspace.getActivePaneItem()?.buffer.file?.path
 
@@ -32,7 +33,7 @@ module.exports =
       type: 'string'
       default: 'ledger'
 
-  getProvider: -> autocompleteProvider
+  getProvider: -> [accountProvider, payeeProvider]
 
   activate: (state) ->
     TransactionsView = require './transactions-view'

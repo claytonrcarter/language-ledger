@@ -132,6 +132,7 @@ end #{directive}
   bu zz  GOOG  1
   ; comment
   quux
+  foo:bar  -42.91 {$4.00} @@ $171.66
 """
       transactionTokens = ['source.ledger', 'meta.transaction.uncleared']
       expectedLines = []
@@ -197,7 +198,21 @@ end #{directive}
         {'  '        : postingTokens}
         {'quux'      : postingTokens.concat ['string.account']}
       ]
-
+      expectedLines.push [
+        {'  '      : postingTokens}
+        {'foo:bar' : postingTokens.concat ['string.account']}
+        {'  '      : postingTokens}
+        {'-42.91'  : postingTokens.concat ['constant.numeric.amount']}
+        {' '       : postingTokens}
+        {'{$'      : postingTokens.concat ['constant.other.symbol.commodity']}
+        {'4.00'    : postingTokens.concat ['constant.numeric.amount']}
+        {'}'  : postingTokens.concat ['constant.other.symbol.commodity']}
+        {' '       : postingTokens}
+        {'@@'  : postingTokens.concat ['constant.other.symbol.commodity']}
+        {' '       : postingTokens}
+        {'$'  : postingTokens.concat ['constant.other.symbol.commodity']}
+        {'171.66'  : postingTokens.concat ['constant.numeric.amount']}
+      ]
       for expectedLine, line in expectedLines
         expect(tokensByLines[line].length).toEqual expectedLine.length
         for token, index in expectedLine
